@@ -1,0 +1,50 @@
+version: '2'
+
+networks:
+  kafkaCluster:
+    driver: bridge
+
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    ports:
+      - 2181:2181
+    networks:
+      - kafkaCluster
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+
+  kafka:
+    image: 'bitnami/kafka:2.5.0'
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+    networks:
+      - kafkaCluster
+    environment:
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+
+  kafka-ui:
+    image: 'obsidiandynamics/kafdrop'
+    ports:
+      - 9000:9000
+    depends_on:
+      - kafka
+    networks:
+      - kafkaCluster
+    environment:
+      KAFKA_BROKERCONNECT: kafka:9092
+
+  producer:
+    build:
+      context: producer/
+    networks:
+      - kafkaCluster
+
+  consumer:
+    build:
+      context: consumer/
+    networks:
+      - kafkaCluster
