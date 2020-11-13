@@ -27,11 +27,12 @@ public class TrialConsumer {
                 "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put(VALUE_DESERIALIZER_CLASS_CONFIG,
                 "org.apache.kafka.common.serialization.StringDeserializer");
-        properties.put(GROUP_ID_CONFIG, GROUP_NAME);
 
     }
 
     public static void main(String[] args) throws Exception {
+        properties.put(GROUP_ID_CONFIG, args.length == 0 ? GROUP_NAME : args[0]);
+        System.out.println("Eventually groupName="+properties.getProperty(GROUP_ID_CONFIG));
         Consumer<String, String> consumer = new KafkaConsumer<>(properties);
         consumer.subscribe(singleton(ClusterProperties.CLUSTER_TYPE));
         Executors.callable((Runnable) () -> {
