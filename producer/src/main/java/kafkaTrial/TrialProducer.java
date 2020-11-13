@@ -7,6 +7,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import java.util.Properties;
 import java.util.stream.IntStream;
 
+import static kafkaTrial.ClusterProperties.CLUSTER_TYPE;
 import static org.apache.kafka.clients.producer.ProducerConfig.*;
 
 public class TrialProducer {
@@ -25,8 +26,9 @@ public class TrialProducer {
 
     public static void main(String[] args) {
         Producer<String, String> producer = new KafkaProducer<>(properties);
+        String message = args.length > 0 ? args[0] : CLUSTER_TYPE;
         IntStream.range(0, 9).forEach(number -> {
-            producer.send(new ProducerRecord<>(ClusterProperties.CLUSTER_TYPE, Integer.toString(number), ClusterProperties.CLUSTER_TYPE + number));
+            producer.send(new ProducerRecord<>(CLUSTER_TYPE, Integer.toString(number), message + number));
             producer.flush();
         });
         producer.close();

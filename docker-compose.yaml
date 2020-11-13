@@ -23,6 +23,7 @@ services:
     networks:
       - kafkaCluster
     environment:
+      KAFKA_NUM_PARTITIONS: 2
       ALLOW_PLAINTEXT_LISTENER: "yes"
       KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
 
@@ -43,7 +44,19 @@ services:
     networks:
       - kafkaCluster
 
-  consumer:
+  consumer1:
+    build:
+      context: consumer/
+    networks:
+      - kafkaCluster
+
+  consumer2:
+    build:
+      context: consumer/
+    networks:
+      - kafkaCluster
+
+  consumer3:
     build:
       context: consumer/
     networks:
