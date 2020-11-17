@@ -7,6 +7,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import java.util.Properties;
 import java.util.stream.IntStream;
 
+import static kafkaTrial.ClusterProperties.CLUSTER_LOCATION;
 import static kafkaTrial.ClusterProperties.CLUSTER_TYPE;
 import static org.apache.kafka.clients.producer.ProducerConfig.*;
 
@@ -16,7 +17,7 @@ public class TrialProducer {
 
     static {
         properties = new Properties();
-        properties.put(BOOTSTRAP_SERVERS_CONFIG, ClusterProperties.CLUSTER_LOCATION);
+        properties.put(BOOTSTRAP_SERVERS_CONFIG, CLUSTER_LOCATION);
         properties.put(KEY_SERIALIZER_CLASS_CONFIG,
                 "org.apache.kafka.common.serialization.StringSerializer");
         properties.put(VALUE_SERIALIZER_CLASS_CONFIG,
